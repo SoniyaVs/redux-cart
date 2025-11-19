@@ -4,6 +4,7 @@ import axios from "axios";
 export const allGetProducts = createAsyncThunk('products/allGetProducts', async () => {
     const result = await axios.get('https://dummyjson.com/products')
     console.log(result.data.products);
+     sessionStorage.setItem('products', JSON.stringify(result.data.products));
     return result.data.products
 
 })

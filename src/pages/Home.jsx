@@ -9,7 +9,7 @@ function Home() {
   const dispatch = useDispatch()
 
   const { loading, allProducts, error } = useSelector(state => state.productReducer)
-  console.log(allProducts);
+  // console.log(allProducts);
 
   useEffect(() => {
     dispatch(allGetProducts())
@@ -33,7 +33,7 @@ function Home() {
                       <Card.Img height={'250px'} variant="top" src={product?.thumbnail} />
                       <Card.Body className='text-center'>
                         <Card.Title>{product?.title}</Card.Title>
-                        <Link to={`/products/${product}/view`} className='btn btn-secondary'>View more..</Link>
+                        <Link to={`/products/${product?.id}/view`} className='btn btn-secondary'>View more..</Link>
                       </Card.Body>
                     </Card>
                   </div>))
