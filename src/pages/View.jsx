@@ -5,6 +5,8 @@ import Header from '../components/Header'
 import { useParams } from 'react-router-dom'
 import { addToWishList } from '../slices/wishlistSlice'
 import { useDispatch, useSelector } from 'react-redux'
+import Swal from 'sweetalert2'
+import { addToCart } from '../slices/cartSlice'
 
 
 
@@ -13,6 +15,7 @@ function View() {
   const { id } = useParams()
   console.log(id);
   const dispatch = useDispatch()
+  const useCart=useSelector(state=>state.cartReducer)
 
   const userWishlist = useSelector(state => state.wishlistReducer)
   // state for storing product to be view
@@ -27,14 +30,34 @@ function View() {
   }, [])
 
   const handleWishlist = () => {
-    const existingProduct = userWishlist?.find(item=>item.id == id)
+    const existingProduct = userWishlist?.find(item => item.id == id)
     if (existingProduct) {
-      alert('Product already in Wishlist..!!')
+      Swal.fire({
+        title: 'Sorry!',
+        text: 'Product already in Wishlist..!!',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      })
     } else {
       dispatch(addToWishList(product))
     }
 
   }
+
+   const handleCart = () => {
+    const existingProduct = useCart?.find(item => item.id == id)
+    dispatch(addToCart(product))
+    if (existingProduct) {
+      Swal.fire({
+        title: 'Completed!',
+        text: existingProduct?`Quantity of ${product.title} is updated successfully`: 'Product add to your cart..!!',
+        icon: 'success',
+        confirmButtonText: 'OK'
+      })
+    } 
+
+  }
+
 
   return (
     < >
@@ -45,7 +68,7 @@ function View() {
             <img className='img-fluid' src={product?.thumbnail} alt="" />
             <div className="d-flex py-2 justify-content-evenly mt-5">
               <button onClick={handleWishlist} className='btn btn-primary'>ADD TO WISHLIST</button>
-              <button className='btn btn-success'>ADD TO CART</button>
+              <button onClick={handleCart} className='btn btn-success'>ADD TO CART</button>
             </div>
           </div>
           <div className="col-md-6">
